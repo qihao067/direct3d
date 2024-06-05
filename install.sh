@@ -7,6 +7,7 @@ mim install mmcv-full
 git clone https://github.com/open-mmlab/mmgeneration.git
 cd mmgeneration
 pip3 install -e .
+cd ..
 
 #### install other dependencies
 pip install -r requirements.txt
