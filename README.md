@@ -59,7 +59,7 @@ ______
 
 ## Text to 3D generation
 
-Run the following command to generate 3D objects. Both 3D meshs and 2D rendered images will be saves.
+Run the following command to generate 3D objects. Both 3D meshs and 2D rendered images will be saved.
 
 ```
 python3 test.py ./configs/text_to_3d.py /path/to/checkpoint --gpu-ids 0 --inference_prompt 'a dinosaur' --seed 99
