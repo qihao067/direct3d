@@ -1,0 +1,1 @@
+We define camera parameters here to render the generated mesh. You can replace these with your own values or remove them and use your own code for visualization.
