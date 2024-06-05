@@ -8,7 +8,7 @@ from mmgen.models.architectures.ddpm.modules import TimeEmbedding
 from mmgen.models.architectures.ddpm.denoising import DenoisingUnet
 from mmgen.models.builder import MODULES, build_module
 
-from lib.models.conditions_utils import EmbedSequential, SpatialTransformer
+from lib.models.prompts.conditions import EmbedSequential, SpatialTransformer
 
 
 @MODULES.register_module()
