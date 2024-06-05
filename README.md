@@ -1,4 +1,4 @@
-# Direct3D (CVPR2024)
+# DIRECT-3D (CVPR2024)
 This is the official PyTorch implementation of the paper:
 
 [CVPR24'] DIRECT-3D: Learning Direct Text-to-3D Generation on Massive Noisy 3D Data
