@@ -5,7 +5,7 @@ This is the official PyTorch implementation of the paper:
 
 [Qihao Liu](https://qihao067.github.io/) | [Yi Zhang](https://edz-o.github.io/) | [Song Bai](https://songbai.site/) | [Adam Kortylewski](https://gvrl.mpi-inf.mpg.de/) | [Alan Yuille](https://cogsci.jhu.edu/directory/alan-yuille/) 
 
-[[project page]()] | [[paper]()] | [[arxiv]()]
+[[project page](https://direct-3d.github.io/)] | [[paper](https://arxiv.org/pdf/2406.04322)] | [[arxiv](https://arxiv.org/abs/2406.04322)]
 
 ______
 
@@ -89,6 +89,8 @@ This codebase is built upon the following repositories:
 - SSDNeRF
 - Stable Diffusion
 
+Much appreciation for the outstanding efforts.
+
 ____________
 
 ## License
@@ -100,6 +102,12 @@ ______
 ## BibTeX
 
 ```
-TODO
+@inproceedings{liu2024direct,
+  title={DIRECT-3D: Learning Direct Text-to-3D Generation on Massive Noisy 3D Data},
+  author={Liu, Qihao and Zhang, Yi and Bai, Song and Kortylewski, Adam and Yuille, Alan L},
+  booktitle={41st IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  year={2024},
+  organization={IEEE}
+}
 ```
 
