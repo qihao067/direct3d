@@ -9,6 +9,22 @@ This is the official PyTorch implementation of the paper:
 
 ______
 
+**DIRECT-3D is a new text-to-3D generative model that directly generates 3D contents in a single forward pass without optimization.**
+
+- **[Fast Text-to-3D generation without optimization]** It can generate high-quality 3D objects with accurate geometric details and various textures in 12 seconds on a single V100, driven by text prompts.
+
+  ![teaser1](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser1.gif)
+
+  ![teaser2](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser2.gif)
+
+- **[Accurate 3D geometry prior]** It also provides accurate and effective 3D geometry prior that significantly alleviates the Janus problem in 2D-lifting methods. The 3D knowledge is embedded in a stable diffusion-like architecture, ensuring ease of use and compatibility with many existing algorithms.
+
+  ![teaser3](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser3.gif)
+
+  ![teaser4](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser4.gif)
+
+______
+
 ## TODO
 
 - [ ] Release all pretrained checkpoints (before June 14th)
@@ -86,8 +102,8 @@ ______
 
 This codebase is built upon the following repositories:
 
-- SSDNeRF
-- Stable Diffusion
+- [[SSDNeRF](https://github.com/Lakonik/SSDNeRF)]
+- [[Stable Diffusion](https://github.com/CompVis/stable-diffusion)]
 
 Much appreciation for the outstanding efforts.
 
