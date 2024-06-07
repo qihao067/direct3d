@@ -13,11 +13,11 @@ ______
 
 - **[Fast Text-to-3D generation without optimization]** It can generate high-quality 3D objects with accurate geometric details and various textures in 12 seconds on a single V100, driven by text prompts.
 
-  ![teaser2](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser2.gif)
+  ![teaser2](https://github.com/qihao067/direct3d/blob/main/imgs/teaser2.gif)
 
 - **[Accurate 3D geometry prior]** It also provides accurate and effective 3D geometry prior that significantly alleviates the Janus problem in 2D-lifting methods. The 3D knowledge is embedded in a stable diffusion-like architecture, ensuring ease of use and compatibility with many existing algorithms.
 
-  ![teaser3](/Users/liuqihao/Desktop/git_repo-/direct3d/imgs/teaser3.gif)
+  ![teaser3](https://github.com/qihao067/direct3d/blob/main/imgs/teaser3.gif)
 
 ______
 
