@@ -1,4 +1,5 @@
 # DIRECT-3D (CVPR2024)
+
 This is the official PyTorch implementation of the paper:
 
 [CVPR24'] DIRECT-3D: Learning Direct Text-to-3D Generation on Massive Noisy 3D Data
@@ -23,8 +24,8 @@ ______
 
 ## TODO
 
-- [ ] Release all pretrained checkpoints (before June 14th)
-- [ ] Release code to improve DreamFusion (before June 23th)
+- [ ] Release all pretrained checkpoints (before the end of June)
+- [ ] Release code to improve DreamFusion (before the end of June)
 
 ______
 
@@ -64,7 +65,7 @@ ______
 
 ## Checkpoints
 
-We will release all checkpoints very soon (before June 14th). 
+We will release all checkpoints very soon (before the end of June). 
 
 
 
@@ -72,13 +73,13 @@ ______
 
 ## Text to 3D generation
 
-Run the following command to generate 3D objects. Both 3D meshs and 2D rendered images will be saved.
+Run the following command to generate 3D objects. Both 3D meshes and 2D rendered images will be saved.
 
 ```
 python3 test.py ./configs/text_to_3d.py /path/to/checkpoint --gpu-ids 0 --inference_prompt 'a dinosaur' --seed 99
 ```
 
-You may also run  `run_demo.sh` to for text-to-3D generation
+You may also run  `run_demo.sh` for text-to-3D generation.
 
 ```
 bash run_demo.sh
