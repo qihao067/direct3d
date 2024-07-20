@@ -65,14 +65,14 @@ ______
 
 ## Checkpoints
 
-We have released our models here. Due to policy issues, we cannot release the original checkpoints, so we retrained the smallest models using Lab GPUs (i.e., 4 A5000). We applied large gradient accumulation to achieve a large batch size, which significantly increased the training time. Consequently, both models released here were trained for only 100K iterations.
+We have released our models here. Due to policy issues, we cannot release the original checkpoints, so we retrained the smallest models using Lab GPUs (i.e., 4 A5000). We applied large gradient accumulation to achieve the same batch size as in the paper, which significantly increased the training time. Consequently, both models released here were trained for only 100K iterations.
 
 To achieve better performance with limited GPUs, we are releasing two versions. The first version ([direct3d_small_0.07.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.07.pth)) uses the same threshold T as in the main paper, leading to more data during training but not converging well due to limited training steps. The second version ([direct3d_small_0.002.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.002.pth)) uses a much smaller threshold T, filtering out more data during training. Surprisingly, it converges well and can generate nice objects. However, due to the very limited data during training, this model lacks diversity and may not understand the input prompt very well.
 
 |                                                              | Threshold T | Data size | Epochs | Comment                                                      |
 | ------------------------------------------------------------ | ----------- | --------- | ------ | ------------------------------------------------------------ |
-| [direct3d_small_0.07.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.07.pth) | 0.07        | ~496K     | 52     | Diverse, faithful to the prompt, <br />but not converging well. |
-| [direct3d_small_0.002.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.002.pth) | 0.002       | ~23K      | 1113   | Converges well and generates nice objects, <br />but may lack diversity. |
+| [direct3d_small_0.07.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.07.pth) | 0.07        | ~496K     | 52     | Diverse, faithful to the prompt, but not converging well.    |
+| [direct3d_small_0.002.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.002.pth) | 0.002       | ~23K      | 1113   | Converges well and generates nice objects, but may lack diversity. |
 
 
 
@@ -124,10 +124,10 @@ ______
 ```
 @inproceedings{liu2024direct,
   title={DIRECT-3D: Learning Direct Text-to-3D Generation on Massive Noisy 3D Data},
-  author={Liu, Qihao and Zhang, Yi and Bai, Song and Kortylewski, Adam and Yuille, Alan L},
-  booktitle={41st IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  year={2024},
-  organization={IEEE}
+  author={Liu, Qihao and Zhang, Yi and Bai, Song and Kortylewski, Adam and Yuille, Alan},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={6881--6891},
+  year={2024}
 }
 ```
 
