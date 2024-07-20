@@ -24,7 +24,7 @@ ______
 
 ## TODO
 
-- [ ] Release all pretrained checkpoints (before the end of June)
+- [x] Release all pretrained checkpoints
 - [ ] Release code to improve DreamFusion (before the end of June)
 
 ______
@@ -65,7 +65,14 @@ ______
 
 ## Checkpoints
 
-We will release all checkpoints very soon (before the end of June). 
+We have released our models here. Due to policy issues, we cannot release the original checkpoints, so we retrained the smallest models using Lab GPUs (i.e., 4 A5000). We applied large gradient accumulation to achieve a large batch size, which significantly increased the training time. Consequently, both models released here were trained for only 100K iterations.
+
+To achieve better performance with limited GPUs, we are releasing two versions. The first version ([direct3d_small_0.07.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.07.pth)) uses the same threshold T as in the main paper, leading to more data during training but not converging well due to limited training steps. The second version ([direct3d_small_0.002.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.002.pth)) uses a much smaller threshold T, filtering out more data during training. Surprisingly, it converges well and can generate nice objects. However, due to the very limited data during training, this model lacks diversity and may not understand the input prompt very well.
+
+|                                                              | Threshold T | Data size | Epochs | Comment                                                      |
+| ------------------------------------------------------------ | ----------- | --------- | ------ | ------------------------------------------------------------ |
+| [direct3d_small_0.07.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.07.pth) | 0.07        | ~496K     | 52     | Diverse, faithful to the prompt, <br />but not converging well. |
+| [direct3d_small_0.002.pth](https://huggingface.co/QHL067/direct3d/blob/main/ckpts/direct3d_small_0.002.pth) | 0.002       | ~23K      | 1113   | Converges well and generates nice objects, <br />but may lack diversity. |
 
 
 
@@ -76,7 +83,7 @@ ______
 Run the following command to generate 3D objects. Both 3D meshes and 2D rendered images will be saved.
 
 ```
-python3 test.py ./configs/text_to_3d.py /path/to/checkpoint --gpu-ids 0 --inference_prompt 'a dinosaur' --seed 99
+python3 test.py ./configs/text_to_3d.py /path/to/checkpoint --gpu-ids 0 --inference_prompt 'a brown boot' --seed 99
 ```
 
 You may also run  `run_demo.sh` for text-to-3D generation.
