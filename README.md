@@ -25,7 +25,7 @@ ______
 ## TODO
 
 - [x] Release all pretrained checkpoints
-- [ ] Release code to improve DreamFusion (before the end of June)
+- [x] Release code to improve DreamFusion
 
 ______
 
