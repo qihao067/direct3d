@@ -130,6 +130,9 @@ class VolumeRenderer(nn.Module):
 
         if self.training:
             results.update(weights=weights)
+            results.update(xyzs=xyzs,
+                           dirs=dirs,
+                           sigmas=sigmas)
         
         if return_loss:
             results.update(decoder_reg_loss=self.loss())
