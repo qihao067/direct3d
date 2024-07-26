@@ -42,3 +42,7 @@ class TruncExp(nn.Module):
         #     )
         # )
         return _trunc_exp.apply(x)
+
+
+def biased_softplus(x, bias=0):
+    return torch.nn.functional.softplus(x - bias)

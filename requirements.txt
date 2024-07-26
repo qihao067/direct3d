@@ -7,7 +7,7 @@ numpy
 opencv_python
 packaging
 PyMCubes==0.1.2
-scipy==1.7.3
+scipy
 setuptools
 six
 tqdm

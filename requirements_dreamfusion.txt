@@ -1,0 +1,10 @@
+lovely_tensors
+psutil
+tensorboardX
+torchmetrics
+torch_ema
+libigl
+pymeshlab
+diffusers >= 0.9.0
+accelerate
+imageio[ffmpeg]

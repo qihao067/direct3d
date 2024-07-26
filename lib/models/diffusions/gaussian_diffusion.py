@@ -3,6 +3,7 @@ import sys
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import mmcv
 
 from copy import deepcopy
@@ -445,3 +446,93 @@ class GaussianDiffusion(nn.Module):
             return self.forward_train(data, **kwargs)
 
         return self.forward_test(data, **kwargs)
+    
+    def forward_sds(self, x_0, concat_cond=None, text_cond=None, grad_guide_fn=None, cfg=dict(),
+                      sample_step=-1, grad_scale=1, recon_std_rescale=0.3, recon_loss_enabled=False,
+                      unconditional_guidance_scale=1., unconditional_conditioning=None, **kwargs):
+        device = get_module_device(self)
+
+        assert x_0.dim() == 4
+        num_batches, num_channels, h, w = x_0.size()
+
+        t = self.sampler(num_batches).to(device)
+        
+        if sample_step != -1:
+            t[:] = sample_step
+
+        with torch.no_grad():
+            noise = _get_noise_batch(
+                None, x_0.shape[-3:],
+                num_timesteps=self.num_timesteps,
+                num_batches=x_0.size(0),
+                timesteps_noise=False
+            ).to(device)  # (num_batches, num_channels, h, w)
+            x_t, mean, std = self.q_sample(x_0, t, noise)
+
+            num_batches = x_t.size(0)
+            if t.dim() == 0 or len(t) != num_batches:
+                t = t.expand(num_batches)
+            sqrt_alpha_bar_t = x_t.new_tensor(self.sqrt_alphas_bar)[t].reshape(-1, 1, 1, 1)
+            sqrt_one_minus_alpha_bar_t = x_t.new_tensor(self.sqrt_one_minus_alphas_bar)[t].reshape(-1, 1, 1, 1)
+
+            # Todo: set denoising requires_grad to False
+            # denoising_output = self.denoising(x_t, t, concat_cond=concat_cond, text_cond=text_cond)
+            if unconditional_conditioning is None or unconditional_guidance_scale==1.:
+                denoising_output = self.denoising(x_t, t, concat_cond=concat_cond, text_cond=text_cond)
+            else:
+                x_in = torch.cat([x_t] * 2)
+                t_in = torch.cat([t] * 2)
+                c_in = torch.cat([unconditional_conditioning, text_cond])
+                if concat_cond is not None:
+                    # import pdb; pdb.set_trace()
+                    concat_cond = torch.cat([concat_cond] * 2)
+                model_uncond, model_text = self.denoising(x_in, t_in, concat_cond=concat_cond, text_cond=c_in).chunk(2)
+                denoising_output = model_uncond + unconditional_guidance_scale * (model_text - model_uncond)  
+
+        if recon_loss_enabled:
+            if self.denoising_mean_mode.upper() == 'EPS':
+                x_0_pred = (x_t - sqrt_one_minus_alpha_bar_t * denoising_output) / sqrt_alpha_bar_t
+            elif self.denoising_mean_mode.upper() == 'START_X':
+                x_0_pred = denoising_output
+            elif self.denoising_mean_mode.upper() == 'V':
+                x_0_pred = sqrt_alpha_bar_t * x_t - sqrt_one_minus_alpha_bar_t * denoising_output
+            else:
+                raise AttributeError('Unknown denoising mean output type '
+                                    f'[{self.denoising_mean_mode}].')
+
+            # clip or rescale x0
+            if recon_std_rescale > 0:
+                if self.denoising_mean_mode.upper() == 'EPS':
+                    x_0_pred_nocfg = (x_t - sqrt_one_minus_alpha_bar_t * model_text) / sqrt_alpha_bar_t
+                elif self.denoising_mean_mode.upper() == 'START_X':
+                    x_0_pred_nocfg = model_text
+                elif self.denoising_mean_mode.upper() == 'V':
+                    x_0_pred_nocfg = sqrt_alpha_bar_t * x_t - sqrt_one_minus_alpha_bar_t * model_text
+                else:
+                    raise AttributeError('Unknown denoising mean output type '
+                                        f'[{self.denoising_mean_mode}].')
+                
+                factor = (x_0_pred_nocfg.std([1,2,3], keepdim=True) + 1e-8) / (x_0_pred.std([1,2,3], keepdim=True) + 1e-8)
+                x_0_pred_adjust = x_0_pred.clone() * factor
+                x_0_pred = recon_std_rescale * x_0_pred_adjust + (1 - recon_std_rescale) * x_0_pred
+
+            # x0-reconstruction loss from Sec 3.2 and Appendix
+            loss = 0.5 * F.mse_loss(x_0, x_0_pred.detach(), reduction="sum") / x_0.shape[0]
+            grad = torch.autograd.grad(loss, x_0, retain_graph=True)[0]
+
+        else:
+  
+            # w(t), sigma_t^2
+            alphas_bar_t = torch.from_numpy(self.alphas_bar)[t:t+1].type_as(x_0).reshape(-1, 1, 1, 1)
+            # print("alphas_bar_t: ", alphas_bar_t)
+            w = (1 - alphas_bar_t)
+            grad = grad_scale * w * (denoising_output - noise)
+            grad = torch.nan_to_num(grad)
+
+            targets = (x_0 - grad).detach()
+            
+            # print("grad: ", grad)
+            # print("targets: ", targets)
+            loss = 0.5 * F.mse_loss(x_0.float(), targets, reduction='sum') / x_0.shape[0]
+
+        return loss

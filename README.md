@@ -57,6 +57,13 @@ pip install -e .
 cd ../shencoder/
 pip install -e .
 cd ../../..
+
+#### Install DreamFusion related dependencies
+pip install -r requirements_dreamfusion.txt
+
+cd lib/ops/freqencoder
+pip install -e .
+cd ../../../
 ```
 
 
@@ -91,7 +98,18 @@ ______
 
 ## Improving 2D-lifting Methods with 3D Prior
 
-We will release the code very soon. 
+Please run `tools/copy_ema.py` to copy the EMA weights to save GPU memory. 
+
+``` 
+#This will save a new weight to ckpts/direct3d_small_0.002_copyema.pth with the EMA weights copied back
+python tools/copy_ema.py ckpts/direct3d_small_0.002.pth
+```
+
+Run `run_demo_dreamfusion.sh` for using DIRECT-3D to improve [DreamFusion](https://dreamfusion3d.github.io/). 
+Please see `demo_dreamfusion.py` and [the original repo](https://github.com/ashawkey/stable-dreamfusion) for the meaning of the parameters.
+```
+bash run_demo_dreamfusion.sh
+```
 
 ______
 
@@ -101,6 +119,7 @@ This codebase is built upon the following repositories:
 
 - [[SSDNeRF](https://github.com/Lakonik/SSDNeRF)]
 - [[Stable Diffusion](https://github.com/CompVis/stable-diffusion)]
+- [[Stable DreamFusion](https://github.com/ashawkey/stable-dreamfusion)]
 
 Much appreciation for the outstanding efforts.
 
